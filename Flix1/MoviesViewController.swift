@@ -23,8 +23,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.dataSource = self
         tableView.delegate = self
         
-        print("Hello")
-        
         let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed")!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
@@ -39,7 +37,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                  
                     self.tableView.reloadData() // update the table view after getting data from API
                  
-                    print(dataDictionary)
+                 
                     // TODO: Get the array of movies
                     // TODO: Store the movies in a property to use elsewhere
                     // TODO: Reload your table view data
@@ -71,6 +69,28 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         cell.posterLabel.af.setImage(withURL:posterUrl!)
         
         return cell
+    }
+    
+    // MARK: - Navigation
+    // In a storyboard-based application, you will ofen want to do a little preparation before navigation
+    override func prepare(for segue:
+        UIStoryboardSegue, sender:Any?){
+        // Get the new view controller using segur.destination.
+        // Pass the selected object to the new view contriller.
+        
+        print("Loading up the details screen")
+        
+        // Find the selected movie
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPath(for: cell)!
+        let movie = movies[indexPath.row]
+        
+        //Pass the selected movie to the details view controller
+        let detailsViewController = segue.destination as! MovieDetailsViewController
+        detailsViewController.movie = movie
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
     }
     
 }
